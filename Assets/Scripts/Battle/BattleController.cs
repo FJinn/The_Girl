@@ -8,6 +8,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] Ally selectedAlly;
     [SerializeField] List<Ally> selectedAllyList;
     private List<Ally> allyList;
+    // cache which ally is currently selected by player
     private int indexOfAlly;
 
     // Action
