@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class GirlController : MonoBehaviour
 {
+    private static GirlController instance;
+    public static GirlController Instance { get { return instance; } }
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    
     enum EmotionType
     {
         Happy,
@@ -28,12 +42,11 @@ public class GirlController : MonoBehaviour
     // my current item
     [SerializeField] static List<Item> itemList;
 
-    // in battle variable
-    // Ally
-    [SerializeField] Ally selectedAlly;
-
-    // Action
-    Action myAction;
-
+    //Ally
+    [SerializeField] static List<Ally> allyList;
+    public List<Ally> GetAllyList()
+    {
+        return allyList;
+    }
 
 }
