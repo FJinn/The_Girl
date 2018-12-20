@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class BattleController : MonoBehaviour
 {
+    enum SelectionState
+    {
+        Ally,
+        Action
+    }
+    [SerializeField] SelectionState currentState;
+
     // Ally
     [SerializeField] Ally selectedAlly;
     [SerializeField] List<Ally> selectedAllyList;
     private List<Ally> allyList;
     // cache which ally is currently selected by player
     private int indexOfAlly;
+    private int actionChoice;
+    
 
     // Action
     Action myAction;
@@ -18,15 +27,20 @@ public class BattleController : MonoBehaviour
     {
         allyList = GirlController.Instance.GetAllyList();
         indexOfAlly = 0;
+        actionChoice = 0;
+        currentState = SelectionState.Ally;
     }
 
     private void Update()
-    {
-        selectedAlly = allyList[indexOfAlly];
-        SelectAlly();
-        if(Input.GetKeyDown(KeyCode.Return))
+    {   
+        if(currentState == SelectionState.Ally)
         {
-            //ChooseAction(selectedAlly);
+            selectedAlly = allyList[indexOfAlly];
+            SelectAlly();
+        }
+        else if(currentState == SelectionState.Action)
+        {
+            ChooseAction(selectedAlly);
         }
     }
 
@@ -54,10 +68,57 @@ public class BattleController : MonoBehaviour
                 indexOfAlly += 1;
             }
         }
+
+        if(Input.GetKey(KeyCode.Z))
+        {
+            currentState = SelectionState.Action;
+        }
     }
 
     private void ChooseAction(Ally ally)
     {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            if (actionChoice == 0)
+            {
+                actionChoice = 3;
+            }
+            else
+            {
+                actionChoice -= 1;
+            }
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            if (actionChoice == 3)
+            {
+                actionChoice = 0;
+            }
+            else
+            {
+                actionChoice += 1;
+            }
+        }
 
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            if(actionChoice == 0)
+            {
+
+            }
+            else if(actionChoice == 1)
+            {
+
+            }
+            else if(actionChoice == 2)
+            {
+
+            }
+            else if(actionChoice == 3)
+            {
+
+            }
+            currentState = SelectionState.Ally;
+        }
     }
 }
