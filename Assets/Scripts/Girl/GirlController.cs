@@ -44,6 +44,7 @@ public class GirlController : MonoBehaviour
 
     //Ally
     [SerializeField] static List<Ally> allyList;
+
     public List<Ally> GetAllyList()
     {
         return allyList;
