@@ -22,9 +22,14 @@ public class BattleController : MonoBehaviour
     private void Update()
     {
         selectedAlly = allyList[indexOfAlly];
+        SelectAlly();
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            //ChooseAction(selectedAlly);
+        }
     }
 
-    public void SelectAlly()
+    private void SelectAlly()
     {   
         if(Input.GetKey(KeyCode.UpArrow))
         {
@@ -48,5 +53,10 @@ public class BattleController : MonoBehaviour
                 indexOfAlly += 1;
             }
         }
+    }
+
+    private void ChooseAction(Ally ally)
+    {
+
     }
 }
