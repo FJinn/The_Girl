@@ -20,11 +20,11 @@ public class GirlController : MonoBehaviour
     
     enum EmotionType
     {
-        Happy,
-        Sad,
-        Angry,
-        Scare,
-        Neutral
+        HAPPY,
+        SAD,
+        ANGRY,
+        SCARE,
+        NEUTRAL
     }
 
     // my attributes

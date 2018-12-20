@@ -6,8 +6,8 @@ public class BattleController : MonoBehaviour
 {
     enum SelectionState
     {
-        Ally,
-        Action
+        ALLY,
+        ACTION
     }
     [SerializeField] SelectionState currentState;
 
