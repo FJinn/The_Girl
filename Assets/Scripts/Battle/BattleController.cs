@@ -28,17 +28,17 @@ public class BattleController : MonoBehaviour
         allyList = GirlController.Instance.GetAllyList();
         indexOfAlly = 0;
         actionChoice = 0;
-        currentState = SelectionState.Ally;
+        currentState = SelectionState.ALLY;
     }
 
     private void Update()
     {   
-        if(currentState == SelectionState.Ally)
+        if(currentState == SelectionState.ALLY)
         {
             selectedAlly = allyList[indexOfAlly];
             SelectAlly();
         }
-        else if(currentState == SelectionState.Action)
+        else if(currentState == SelectionState.ACTION)
         {
             ChooseAction(selectedAlly);
         }
@@ -71,7 +71,7 @@ public class BattleController : MonoBehaviour
 
         if(Input.GetKey(KeyCode.Z))
         {
-            currentState = SelectionState.Action;
+            currentState = SelectionState.ACTION;
         }
     }
 
@@ -118,7 +118,7 @@ public class BattleController : MonoBehaviour
             {
 
             }
-            currentState = SelectionState.Ally;
+            currentState = SelectionState.ALLY;
         }
     }
 }
