@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-1
+
+[System.Serializable]
 public class KnowledgeSlotController : MonoBehaviour
 {
     // cache knowledge information
@@ -27,9 +28,27 @@ public class KnowledgeSlotController : MonoBehaviour
     {
         // initialize the slot content
         myKnowledge = new Knowledge(myName, myDescription, myElement, myType, myValue);
+        // add to knowledgeSlotInterface list
+        KnowledgeSlotInterface.AddToList(this);
     }
 
+    // spent knowledge point and turn this slot on
+    void ChangeStatus()
+    {
 
+    }
+
+    // reduce Girl knowledge point by myCost
+    void ReduceKnowledgePoint()
+    {
+
+    }
+
+    // Activate next slot after this slot is on
+    void ActivateNextSlot()
+    {
+
+    }
 }
 
 public enum KnowledgeType
