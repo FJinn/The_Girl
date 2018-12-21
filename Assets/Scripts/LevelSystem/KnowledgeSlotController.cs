@@ -61,9 +61,9 @@ public enum KnowledgeType
 
 public enum ElementType
 {
-    SKILL,
-    ATTRIBUTE,
-    BUFF,
+    FIRE,
+    WATER,
+    PLANT,
     BLANK
 }
 
