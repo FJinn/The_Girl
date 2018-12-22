@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Action : MonoBehaviour
 {
+    // default constructor
+    public Action() { }
+
     public virtual void Behavior(GameObject go)
     {
 
@@ -28,7 +31,7 @@ public class ControllableAction : Action
     }
 }
 
-public class Attack : ControllableAction
+class Attack : ControllableAction
 {
     public override void Behavior(GameObject go)
     {
