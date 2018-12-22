@@ -8,11 +8,11 @@ public enum NPCTypes
 };
 public class BattleNPC : MonoBehaviour
 {
-    [SerializeField] ElementType myStrength;
-    [SerializeField] ElementType myWeakness;
-    [SerializeField] NPCTypes myType;
-    [SerializeField] float myBaseDamage;
-    [SerializeField] float myBaseDefense;
+    [SerializeField] public ElementType myStrength;
+    [SerializeField] public ElementType myWeakness;
+    [SerializeField] public NPCTypes myType;
+    [SerializeField] public float myBaseDamage;
+    [SerializeField] public float myBaseDefense;
 
     float myDamage;
     string myDefense;
@@ -32,6 +32,23 @@ public class BattleNPC : MonoBehaviour
     }
 
     void CalculateDamageReceived()
+    {
+
+    }
+}
+public class Monster : BattleNPC
+{
+    [SerializeField] float myHP;
+    [SerializeField] Knowledge myKnowledgeSkill;
+    public Monster(float baseDmg, float baseDef,float myhp,ElementType myStrh,ElementType myWea,Knowledge myKnowledge) :base ( baseDmg,  baseDef)
+    {     
+        myhp = myHP;
+        myStrh = myStrength;
+        myWea = myWeakness;
+        myKnowledge = myKnowledgeSkill;
+    }
+
+    void ChooseAction()
     {
 
     }
