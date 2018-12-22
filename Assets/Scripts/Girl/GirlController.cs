@@ -43,9 +43,9 @@ public class GirlController : MonoBehaviour
     [SerializeField] static List<Item> itemList;
 
     //Ally
-    [SerializeField] static List<Ally> allyList;
+    [SerializeField] static List<BattleNPC> allyList;
 
-    public List<Ally> GetAllyList()
+    public List<BattleNPC> GetAllyList()
     {
         return allyList;
     }

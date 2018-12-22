@@ -12,9 +12,9 @@ public class BattleController : MonoBehaviour
     [SerializeField] SelectionState currentState;
 
     // Ally
-    [SerializeField] Ally selectedAlly;
-    [SerializeField] List<Ally> selectedAllyList;
-    private List<Ally> allyList;
+    [SerializeField] BattleNPC selectedAlly;
+    [SerializeField] List<BattleNPC> selectedAllyList;
+    private List<BattleNPC> allyList;
     // cache which ally is currently selected by player
     private int indexOfAlly;
     private int actionChoice;
@@ -75,7 +75,7 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    private void ChooseAction(Ally ally)
+    private void ChooseAction(BattleNPC ally)
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
