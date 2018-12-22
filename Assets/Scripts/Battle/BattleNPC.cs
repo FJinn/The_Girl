@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum NPCTypes
 {
     ALLY,
     MONSTER
 };
+
 public class BattleNPC : MonoBehaviour
 {
-    [SerializeField] public ElementType myStrength;
-    [SerializeField] public ElementType myWeakness;
-    [SerializeField] public NPCTypes myType;
-    [SerializeField] public float myBaseDamage;
-    [SerializeField] public float myBaseDefense;
+    [SerializeField] ElementType myStrength;
+    [SerializeField] ElementType myWeakness;
+    [SerializeField] protected NPCTypes myType;
+    [SerializeField] float myBaseDamage;
+    [SerializeField] float myBaseDefense;
 
     float myDamage;
     string myDefense;
@@ -20,7 +22,7 @@ public class BattleNPC : MonoBehaviour
     float totalDamageReceived;
 
     // constructor
-    public BattleNPC(float baseDmg, float baseDef)
+    public BattleNPC(float baseDmg, float baseDef, ElementType strength, ElementType weakness)
     {
         baseDmg = myBaseDamage;
         baseDef = myBaseDefense;
@@ -30,22 +32,40 @@ public class BattleNPC : MonoBehaviour
     {
 
     }
-
+    
     void CalculateDamageReceived()
     {
 
     }
 }
+
 public class Monster : BattleNPC
 {
-    [SerializeField] float myHP;
-    [SerializeField] Knowledge myKnowledgeSkill;
-    public Monster(float baseDmg, float baseDef,float myhp,ElementType myStrh,ElementType myWea,Knowledge myKnowledge) :base ( baseDmg,  baseDef)
-    {     
-        myhp = myHP;
-        myStrh = myStrength;
-        myWea = myWeakness;
-        myKnowledge = myKnowledgeSkill;
+    float myHP;
+    [SerializeField] List<Knowledge> myKnowledgeSkillList;
+    public Monster(float baseDmg, float baseDef,ElementType strength,ElementType weakness) :base ( baseDmg,  baseDef, strength, weakness)
+    {
+        myType = NPCTypes.MONSTER;
+    }
+
+    public float GetMyHP()
+    {
+        return myHP;
+    }
+
+    public void SetMyHP(float value)
+    {
+        value = myHP;
+    }
+
+    public List<Knowledge> GetMyKnowledgeList()
+    {
+        return myKnowledgeSkillList;
+    }
+
+    public void SetMyKnowledge(Knowledge newKnowledge)
+    {
+        myKnowledgeSkillList.Add(newKnowledge);
     }
 
     void ChooseAction()
