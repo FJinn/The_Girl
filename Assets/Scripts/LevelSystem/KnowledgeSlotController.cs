@@ -61,7 +61,7 @@ public enum KnowledgeType
 
 public enum ElementType
 {
-    FIRE,
+    FIRE = 0,
     WATER,
     PLANT,
     BLANK

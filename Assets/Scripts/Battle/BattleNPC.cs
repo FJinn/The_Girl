@@ -17,7 +17,7 @@ public class BattleNPC : MonoBehaviour
     [SerializeField] float myBaseDefense;
 
     float myDamage;
-    string myDefense;
+    float myDefense;
 
     float totalDamageReceived;
 
@@ -32,10 +32,25 @@ public class BattleNPC : MonoBehaviour
     {
 
     }
-    
-    void CalculateDamageReceived()
-    {
 
+    public void SetDamage(float value)
+    {
+        myDamage = value;
+    }
+
+    public float GetDamage()
+    {
+        return myDamage;
+    }
+
+    public void SetDefense(float value)
+    {
+        myDefense = value;
+    }
+
+    public float GetDefense()
+    {
+        return myDefense;
     }
 }
 
