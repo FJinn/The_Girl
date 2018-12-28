@@ -21,13 +21,14 @@ public class GirlController : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    
+
     // my attributes
-    [SerializeField] float myHP;
+    [SerializeField] float myCurrentHP;
+    [SerializeField] float myHPLimit;
     /// <summary>
     /// EQ level that affects damage, defend, and heal
     /// </summary>
-    [SerializeField] float myEQ;
+    [SerializeField] float myEq;
     [SerializeField] int myKnowledgePoint;
 
     // my emotion status
@@ -35,10 +36,11 @@ public class GirlController : MonoBehaviour
     /// emotion level determines controllable or uncontrollable action
     /// </summary>
     [SerializeField] float myEmotionLevel;
+    [SerializeField] float myEmotionLevelRate;
     [SerializeField] EmotionType myEmotionType;
 
     // my current skill
-    public static List<Skill> skillList;
+    public static List<Knowledge> skillList;
 
     // my current item
     public static List<Item> itemList;
@@ -57,24 +59,34 @@ public class GirlController : MonoBehaviour
     // ------------------------------------------------------------------------- //
     // ------------------------------------------------------------------------- //
 
-    public void SetHP(float value)
+    public void SetCurrentHP(float value)
     {
-        myHP = value;
+        myCurrentHP = value;
     }
 
-    public float GetHP()
+    public float GetCurrentHP()
     {
-        return myHP;
+        return myCurrentHP;
+    }
+
+    public void SetHPLimit(float value)
+    {
+        myHPLimit = value;
+    }
+
+    public float GetHPLimit()
+    {
+        return myHPLimit;
     }
 
     public void SetEQ(float value)
     {
-        myEQ = value;
+        myEq = value;
     }
 
     public float GetEQ()
     {
-        return myEQ;
+        return myEq;
     }
 
     public void SetKnowledgePoint(int value)
@@ -99,12 +111,22 @@ public class GirlController : MonoBehaviour
 
     public void SetEmotionLevel(float value)
     {
-        myEmotionLevel = value;
+        myEmotionLevel = value * myEmotionLevelRate;
     }
 
     public float GetEmotionLevel()
     {
         return myEmotionLevel;
+    }
+
+    public void SetEmotionLevelRate(float value)
+    {
+        myEmotionLevelRate = value;
+    }
+
+    public float GetEmotionLevelRate()
+    {
+        return myEmotionLevelRate;
     }
 
     public void SetEmotionType(EmotionType et)

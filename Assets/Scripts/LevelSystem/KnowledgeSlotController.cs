@@ -19,7 +19,7 @@ public class KnowledgeSlotController : MonoBehaviour
     [SerializeField] KnowledgeSlotController[] nextSlot;
 
     // slot status that control activation
-    bool isActivated;
+    [SerializeField] bool isActivated;
 
     // cost of slot activation
     int myCost;
@@ -33,16 +33,51 @@ public class KnowledgeSlotController : MonoBehaviour
     }
 
     // spent knowledge point and turn this slot on
-    void ChangeStatus()
+    public void ActivateSlot()
     {
         // activated
         isActivated = true;
+        // set next slot active
+        ActivateNextSlot();
+        // update girl knowledge point
+        ReduceKnowledgePoint();
+        // add this slot knowledge to girl skill list
+        UpdateGirlKnowledge();
     }
 
-    // reduce Girl knowledge point by myCost
+    // Reduce Girl knowledge point by myCost
     void ReduceKnowledgePoint()
     {
+        int tempKP = GirlController.Instance.GetKnowledgePoint();
+        tempKP -= myCost;
+        GirlController.Instance.SetKnowledgePoint(tempKP);
+    }
 
+    // Add this knowledge to girl
+    void UpdateGirlKnowledge()
+    {
+        if (myType == KnowledgeType.SKILL)
+        {
+            GirlController.skillList.Add(myKnowledge);
+        }
+        else if(myType == KnowledgeType.EMOTION_RATE)
+        {
+            float tempRate = GirlController.Instance.GetEmotionLevelRate();
+            tempRate += myValue;
+            GirlController.Instance.SetEmotionLevelRate(tempRate);
+        }
+        else if(myType == KnowledgeType.ATTRIBUTE_HP)
+        {
+            float tempHP = GirlController.Instance.GetHPLimit();
+            tempHP += myValue;
+            GirlController.Instance.SetHPLimit(tempHP);
+        }
+        else if (myType == KnowledgeType.ATTRIBUTE_EQ)
+        {
+            float tempEQ = GirlController.Instance.GetEQ();
+            tempEQ += myValue;
+            GirlController.Instance.SetEQ(tempEQ);
+        }
     }
 
     // Activate next slot after this slot is on
@@ -58,8 +93,9 @@ public class KnowledgeSlotController : MonoBehaviour
 public enum KnowledgeType
 {
     SKILL,
-    ATTRIBUTE,
-    BUFF,
+    ATTRIBUTE_HP,
+    ATTRIBUTE_EQ,
+    EMOTION_RATE,
     BLANK
 }
 
