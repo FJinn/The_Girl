@@ -35,7 +35,7 @@ public class BattleController : MonoBehaviour
 
     private void OnEnable()
     {
-        allyList = GirlController.Instance.GetAllyList();
+        allyList = GirlController.allyList;
         // set myAction number
         myAction = new Action[allyList.Count];
         // add ally into target list

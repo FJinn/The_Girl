@@ -57,9 +57,14 @@ public class GirlController : MonoBehaviour
     // ------------------------------------------------------------------------- //
     // ------------------------------------------------------------------------- //
 
-    public List<BattleNPC> GetAllyList()
+    public void SetHP(float value)
     {
-        return allyList;
+        myHP = value;
+    }
+
+    public float GetHP()
+    {
+        return myHP;
     }
 
     public void SetEQ(float value)
@@ -100,6 +105,11 @@ public class GirlController : MonoBehaviour
     public float GetEmotionLevel()
     {
         return myEmotionLevel;
+    }
+
+    public void SetEmotionType(EmotionType et)
+    {
+        myEmotionType = et;
     }
 
     public EmotionType GetEmotionType()
