@@ -35,7 +35,8 @@ public class KnowledgeSlotController : MonoBehaviour
     // spent knowledge point and turn this slot on
     void ChangeStatus()
     {
-
+        // activated
+        isActivated = true;
     }
 
     // reduce Girl knowledge point by myCost
@@ -47,7 +48,10 @@ public class KnowledgeSlotController : MonoBehaviour
     // Activate next slot after this slot is on
     void ActivateNextSlot()
     {
-
+        for(int i=0; i<nextSlot.Length; i++)
+        {
+            nextSlot[i].enabled = true;
+        }
     }
 }
 

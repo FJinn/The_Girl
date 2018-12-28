@@ -72,6 +72,16 @@ public class GirlController : MonoBehaviour
         return myEQ;
     }
 
+    public void SetKnowledgePoint(int value)
+    {
+        myKnowledgePoint = value;
+    }
+
+    public int GetKnowledgePoint()
+    {
+        return myKnowledgePoint;
+    }
+
     public void SetBattleController(BattleController bc)
     {
         myBattleController = bc;
