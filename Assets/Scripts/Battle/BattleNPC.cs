@@ -28,11 +28,6 @@ public class BattleNPC : MonoBehaviour
         baseDef = myBaseDefense;
     }
 
-    private void Awake()
-    {
-
-    }
-
     public void SetDamage(float value)
     {
         myDamage = value;

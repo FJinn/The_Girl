@@ -9,6 +9,7 @@ public class BattleController : MonoBehaviour
         ALLY,
         ACTION,
         UNCONTROLLABLE,
+        TARGET,
         NONE
     }
     [SerializeField] SelectionState currentState;
@@ -17,18 +18,35 @@ public class BattleController : MonoBehaviour
     [SerializeField] BattleNPC selectedAlly;
     [SerializeField] List<BattleNPC> selectedAllyList;
     private List<BattleNPC> allyList;
+    // Target list
+    public static List<BattleNPC> targetList;
     // cache which ally is currently selected by player
     private int indexOfAlly;
     private int actionChoice;
-    
+    // index for myAction
+    int indexOfAction;
+    // index for target
+    int indexOfTarget;
+    // action target number
+    public static int actionTargetNumber;
+
     // Action
-    Action myAction;
+    Action[] myAction;
 
     private void OnEnable()
     {
         allyList = GirlController.Instance.GetAllyList();
+        // set myAction number
+        myAction = new Action[allyList.Count];
+        // add ally into target list
+        for(int i=0; i<allyList.Count; i++)
+        {
+            targetList.Add(allyList[i]);
+        }
         indexOfAlly = 0;
         actionChoice = 0;
+        // index for myAction
+        indexOfAction = 0;
         // set state = none
         currentState = SelectionState.NONE;
         // state will be UNCONTROLLABLE if girl emotion is over 100 and uncontrollable
@@ -49,6 +67,13 @@ public class BattleController : MonoBehaviour
         else if(currentState == SelectionState.ACTION)
         {
             ChooseAction();
+        }
+        else if(currentState == SelectionState.TARGET)
+        {
+            for (int i = 0; i < actionTargetNumber; i++)
+            {
+                ChooseTarget();
+            }
         }
     }
 
@@ -81,6 +106,8 @@ public class BattleController : MonoBehaviour
         {
             // store selected ally from the index
             selectedAlly = allyList[indexOfAlly];
+            // remove selected ally from allyList
+            allyList.RemoveAt(indexOfAlly);
             // add selected and stored ally into selectedAllyList for further function or add action respectively
             selectedAllyList.Add(selectedAlly);
             currentState = SelectionState.ACTION;
@@ -117,28 +144,29 @@ public class BattleController : MonoBehaviour
             if(actionChoice == 0)
             {
                 // Normal Attack
-
+                myAction[indexOfAction] = new Attack();
             }
             else if(actionChoice == 1)
             {
                 // Normal Defend
-
+                myAction[indexOfAction] = new Defend();
             }
             else if(actionChoice == 2)
             {
                 // Use Knowledge
-
+                myAction[indexOfAction] = new UseKnowledge();
             }
             else if(actionChoice == 3)
             {
                 // Run
-                // Increase Emotion level to Max
-                GirlController.Instance.SetEmotionLevel(GirlController.MAX_EMOTIONLEVEL);
-                // End battle
-                GameStateManager.Instance.SetGameState(GameState.BATTLE_END);
+                myAction[indexOfAction] = new Run();
+                // Deactivate game object as battle ends
                 gameObject.SetActive(false);
             }
-            currentState = SelectionState.ALLY;
+            currentState = SelectionState.TARGET;
+
+            // increase index of action
+            indexOfAction++;
 
             // after chose action, check if the selected ally list contains more or equal to ally list
             // if correct, end the phase and disable self
@@ -147,6 +175,39 @@ public class BattleController : MonoBehaviour
                 GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
                 gameObject.SetActive(false);
             }
+        }
+    }
+
+    void ChooseTarget()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            if (indexOfTarget == 0)
+            {
+                indexOfTarget = targetList.Count - 1;
+            }
+            else
+            {
+                indexOfTarget -= 1;
+            }
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            if (indexOfTarget == targetList.Count - 1)
+            {
+                indexOfTarget = 0;
+            }
+            else
+            {
+                indexOfTarget += 1;
+            }
+        }
+
+        // select target(s)
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            myAction[indexOfAction].SetTarget(targetList[indexOfTarget]);
+            currentState = SelectionState.ALLY;
         }
     }
 
@@ -163,23 +224,26 @@ public class BattleController : MonoBehaviour
         {
             if (girl.GetEmotionType() == EmotionType.ANGRY)
             {
-                myAction = new UncontrollableAngry();
+                myAction[indexOfAction] = new UncontrollableAngry();
             }
             else if (girl.GetEmotionType() == EmotionType.HAPPY)
             {
-                myAction = new UncontrollableHappy();
+                myAction[indexOfAction] = new UncontrollableHappy();
             }
             else if (girl.GetEmotionType() == EmotionType.SAD)
             {
-                myAction = new UncontrollableSad();
+                myAction[indexOfAction] = new UncontrollableSad();
             }
             else if (girl.GetEmotionType() == EmotionType.SCARE)
             {
-                myAction = new UncontrollableScare();
+                myAction[indexOfAction] = new UncontrollableScare();
             }
 
             // disable choose ally and choose action
             currentState = SelectionState.UNCONTROLLABLE;
+            // skip to battle phase and disable game object
+            GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
+            gameObject.SetActive(false);
         }
     }
 }

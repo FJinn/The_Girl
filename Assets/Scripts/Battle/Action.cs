@@ -4,10 +4,23 @@ using UnityEngine;
 
 public class Action : MonoBehaviour
 {
-    // default constructor
-    public Action() { }
+    // target list
+    List<BattleNPC> myTargetList;
 
-    public virtual void Behavior(GameObject go)
+    // default constructor
+    public Action()
+    {
+        // clear target list in case myTargetList is the previous list
+        myTargetList.Clear();
+    }
+
+    // set my target
+    public void SetTarget(BattleNPC target)
+    {
+        myTargetList.Add(target);
+    }
+
+    public virtual void Behavior()
     {
 
     }
@@ -20,9 +33,9 @@ public class Action : MonoBehaviour
 
 public class ControllableAction : Action
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -33,9 +46,9 @@ public class ControllableAction : Action
 
 class Attack : ControllableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -46,9 +59,9 @@ class Attack : ControllableAction
 
 public class Defend : ControllableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -57,11 +70,11 @@ public class Defend : ControllableAction
     }
 }
 
-public class UseSkill : ControllableAction
+public class UseKnowledge : ControllableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -72,9 +85,14 @@ public class UseSkill : ControllableAction
 
 public class Run : ControllableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
+
+        // Increase Emotion level to Max
+        GirlController.Instance.SetEmotionLevel(GirlController.MAX_EMOTIONLEVEL);
+        // End battle
+        GameStateManager.Instance.SetGameState(GameState.BATTLE_END);
     }
 
     public override void Display()
@@ -85,9 +103,9 @@ public class Run : ControllableAction
 
 public class UncontrollableAction : Action
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -98,9 +116,9 @@ public class UncontrollableAction : Action
 
 public class UncontrollableHappy : UncontrollableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -111,9 +129,9 @@ public class UncontrollableHappy : UncontrollableAction
 
 public class UncontrollableSad : UncontrollableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -124,9 +142,9 @@ public class UncontrollableSad : UncontrollableAction
 
 public class UncontrollableScare : UncontrollableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
@@ -137,9 +155,9 @@ public class UncontrollableScare : UncontrollableAction
 
 public class UncontrollableAngry : UncontrollableAction
 {
-    public override void Behavior(GameObject go)
+    public override void Behavior()
     {
-        base.Behavior(go);
+        base.Behavior();
     }
 
     public override void Display()
