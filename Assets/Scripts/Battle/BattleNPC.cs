@@ -28,6 +28,31 @@ public class BattleNPC : MonoBehaviour
         baseDef = myBaseDefense;
     }
 
+    public ElementType GetStrength()
+    {
+        return myStrength;
+    }
+
+    public ElementType GetWeakness()
+    {
+        return myWeakness;
+    }
+
+    public NPCTypes GetNPCType()
+    {
+        return myType;
+    }
+
+    public float GetBaseDamage()
+    {
+        return myBaseDamage;
+    }
+
+    public float GetBaseDefense()
+    {
+        return myBaseDefense;
+    }
+
     public void SetDamage(float value)
     {
         myDamage = value;
