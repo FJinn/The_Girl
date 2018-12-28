@@ -6,6 +6,7 @@ using UnityEngine;
 public class KnowledgeSlotController : MonoBehaviour
 {
     // cache knowledge information
+    [SerializeField] int myID;
     [SerializeField] string myName;
     [SerializeField] string myDescription;
     [SerializeField] ElementType myElement;
@@ -27,9 +28,11 @@ public class KnowledgeSlotController : MonoBehaviour
     private void Awake()
     {
         // initialize the slot content
-        myKnowledge = new Knowledge(myName, myDescription, myElement, myType, myValue);
+        myKnowledge = new Knowledge(myID, myName, myDescription, myElement, myType, myValue);
         // add to knowledgeSlotInterface list
-        KnowledgeSlotInterface.AddToList(this);
+        // assuming it will auto update when this script value is changed
+        // for saving the data, telling data which has activated
+        KnowledgeSlotInterface.AddToList(myID, this);
     }
 
     // spent knowledge point and turn this slot on
@@ -109,6 +112,7 @@ public enum ElementType
 
 public class Knowledge
 {
+    int myID;
     string myName;
     string myDescription;
     ElementType myElement;
@@ -120,7 +124,7 @@ public class Knowledge
     public Knowledge() { }
 
     // overload constructor
-    public Knowledge(string name, string description, ElementType element, KnowledgeType type, float value) { }
+    public Knowledge(int ID, string name, string description, ElementType element, KnowledgeType type, float value) { }
 
 }
 
