@@ -145,16 +145,19 @@ public class BattleController : MonoBehaviour
             {
                 // Normal Attack
                 myAction[indexOfAction] = new Attack();
+                myAction[indexOfAction].thisNPC = selectedAlly;
             }
             else if(actionChoice == 1)
             {
                 // Normal Defend
                 myAction[indexOfAction] = new Defend();
+                myAction[indexOfAction].thisNPC = selectedAlly;
             }
             else if(actionChoice == 2)
             {
                 // Use Knowledge
                 myAction[indexOfAction] = new UseKnowledge();
+                myAction[indexOfAction].thisNPC = selectedAlly;
             }
             else if(actionChoice == 3)
             {
