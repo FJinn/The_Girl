@@ -5,7 +5,8 @@ using UnityEngine;
 public class Action : MonoBehaviour
 {
     // target list
-    List<BattleNPC> myTargetList;
+    public List<BattleNPC> myTargetList;
+    public BattleNPC thisNPC;
 
     // default constructor
     public Action()
@@ -49,6 +50,13 @@ class Attack : ControllableAction
     public override void Behavior()
     {
         base.Behavior();
+        for(int i=0;i<myTargetList.Count;i++)
+        {
+            float hp = myTargetList[i].GetMyHP();
+            float damage = thisNPC.GetBaseDamage() + thisNPC.GetDamage();
+            hp -= damage;
+            myTargetList[i].SetMyHP(hp);
+        }
     }
 
     public override void Display()
