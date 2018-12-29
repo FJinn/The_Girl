@@ -15,7 +15,7 @@ public class BattleNPC : MonoBehaviour
     [SerializeField] protected NPCTypes myType;
     [SerializeField] float myBaseDamage;
     [SerializeField] float myBaseDefense;
-    float myHP;
+    
 
     float myDamage;
     float myDefense;
@@ -76,16 +76,6 @@ public class BattleNPC : MonoBehaviour
         return myDefense;
     }
 
-    public float GetMyHP()
-    {
-        return myHP;
-    }
-
-    public void SetMyHP(float value)
-    {
-        value = myHP;
-    }
-
     public bool GetDefendBool()
     {
         return isDefend;
@@ -99,11 +89,21 @@ public class BattleNPC : MonoBehaviour
 
 public class Monster : BattleNPC
 {
-    
+    float myHP;
     [SerializeField] List<Knowledge> myKnowledgeSkillList;
     public Monster(float baseDmg, float baseDef,ElementType strength,ElementType weakness) :base ( baseDmg,  baseDef, strength, weakness)
     {
         myType = NPCTypes.MONSTER;
+    }
+
+    public float GetMyHP()
+    {
+        return myHP;
+    }
+
+    public void SetMyHP(float value)
+    {
+        value = myHP;
     }
 
     public List<Knowledge> GetMyKnowledgeList()

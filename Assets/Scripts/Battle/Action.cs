@@ -58,15 +58,17 @@ class Attack : ControllableAction
         base.Behavior();
         for(int i=0;i<myTargetList.Count;i++)
         {
-            float hp = myTargetList[i].GetMyHP();
+            BattleNPC temp = myTargetList[i];
+            Monster tempTarget = (Monster)temp;
+            float hp = tempTarget.GetMyHP();
             float damage = thisNPC.GetBaseDamage() + thisNPC.GetDamage();
-            float defense = myTargetList[i].GetBaseDefense() + myTargetList[i].GetDefense();
+            float defense = tempTarget.GetBaseDefense() + tempTarget.GetDefense();
             if(damage > defense)
             {
                 damage = damage - defense;
                 hp -= damage;
-            }    
-            myTargetList[i].SetMyHP(hp);
+            }
+            tempTarget.SetMyHP(hp);
         }
     }
 
