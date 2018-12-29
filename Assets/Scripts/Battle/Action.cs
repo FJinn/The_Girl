@@ -13,6 +13,12 @@ public class Action : MonoBehaviour
     {
         // clear target list in case myTargetList is the previous list
         myTargetList.Clear();
+        //reset defense point
+        if(thisNPC.GetDefendBool() == true)
+        {
+            thisNPC.SetDefense(thisNPC.GetDefense() + 10);
+            thisNPC.SetDefendBool(false);
+        }
     }
 
     // set my target
@@ -54,7 +60,12 @@ class Attack : ControllableAction
         {
             float hp = myTargetList[i].GetMyHP();
             float damage = thisNPC.GetBaseDamage() + thisNPC.GetDamage();
-            hp -= damage;
+            float defense = myTargetList[i].GetBaseDefense() + myTargetList[i].GetDefense();
+            if(damage > defense)
+            {
+                damage = damage - defense;
+                hp -= damage;
+            }    
             myTargetList[i].SetMyHP(hp);
         }
     }
@@ -70,6 +81,8 @@ public class Defend : ControllableAction
     public override void Behavior()
     {
         base.Behavior();
+        thisNPC.SetDefense(thisNPC.GetDefense() + 10);
+        thisNPC.SetDefendBool(true);
     }
 
     public override void Display()

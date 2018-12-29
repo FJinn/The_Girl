@@ -22,6 +22,8 @@ public class BattleNPC : MonoBehaviour
 
     float totalDamageReceived;
 
+    bool isDefend = false;
+
     // constructor
     public BattleNPC(float baseDmg, float baseDef, ElementType strength, ElementType weakness)
     {
@@ -82,6 +84,16 @@ public class BattleNPC : MonoBehaviour
     public void SetMyHP(float value)
     {
         value = myHP;
+    }
+
+    public bool GetDefendBool()
+    {
+        return isDefend;
+    }
+
+    public void SetDefendBool(bool bo)
+    {
+        isDefend = bo;
     }
 }
 
