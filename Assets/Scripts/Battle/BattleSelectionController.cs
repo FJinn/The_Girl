@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleController : MonoBehaviour
+public class BattleSelectionController : MonoBehaviour
 {
     enum SelectionState
     {
@@ -16,7 +16,9 @@ public class BattleController : MonoBehaviour
 
     // Ally
     [SerializeField] BattleNPC selectedAlly;
-    [SerializeField] List<BattleNPC> selectedAllyList;
+    // ally that has been selected for battle action
+    public static List<BattleNPC> selectedAllyList;
+    // current active ally 
     private List<BattleNPC> allyList;
     // Target list
     public static List<BattleNPC> targetList;
@@ -31,7 +33,12 @@ public class BattleController : MonoBehaviour
     public static int actionTargetNumber;
 
     // Action
-    Action[] myAction;
+    public static Action[] myAction;
+
+    private void Awake()
+    {
+        GirlController.Instance.SetBattleSelectionController(this);
+    }
 
     private void OnEnable()
     {

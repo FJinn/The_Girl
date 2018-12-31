@@ -14,7 +14,9 @@ public class MonsterEncounterController : MonoBehaviour
         // Random number
         int monsterNum = Random.Range(2, 4);
         // clear targetList
-        BattleController.targetList.Clear();
+        BattleSelectionController.targetList.Clear();
+        // clear monsterList
+        BattlePhaseController.monsterList.Clear();
         // creates monsters and link it to gameObject
         for(int i=0; i<monsterNum; i++)
         {
@@ -22,9 +24,11 @@ public class MonsterEncounterController : MonoBehaviour
             monsterArray[i] = (Monster)m;
             monsterGO[i].GetComponent<MonsterController>().SetMonster(monsterArray[i]);
             // add into battle controller static list
-            BattleController.targetList.Add(monsterArray[i]);
+            BattleSelectionController.targetList.Add(monsterArray[i]);
+            // add into monsterList
+            BattlePhaseController.monsterList.Add(monsterArray[i]);
         }
-        // Enable battle controller
-        GirlController.Instance.GetBattleController().enabled = true;
+        // Enable battle selection controller
+        GirlController.Instance.GetBattleSelectionController().enabled = true;
     }
 }

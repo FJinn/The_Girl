@@ -38,6 +38,11 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // 
+    }
+
     public void SetGameState(GameState newGameState)
     {
         myGameState = newGameState;
@@ -55,6 +60,13 @@ public class GameStateManager : MonoBehaviour
 
     void SelectionPhase()
     {
+        // for player to select ally, target, and action
+        GirlController.Instance.GetBattleSelectionController().enabled = true;
+    }
 
+    void BattlePhase()
+    {
+        // to display attack and count the math
+        GirlController.Instance.GetBattlePhaseController().enabled = true;
     }
 }

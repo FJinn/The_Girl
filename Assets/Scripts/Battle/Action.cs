@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action : MonoBehaviour
+public class Action
 {
     // target list
     public List<BattleNPC> myTargetList;
@@ -142,6 +142,7 @@ public class UncontrollableHappy : UncontrollableAction
     public override void Behavior()
     {
         base.Behavior();
+        Debug.Log("I am HAPPY");
     }
 
     public override void Display()
@@ -155,6 +156,7 @@ public class UncontrollableSad : UncontrollableAction
     public override void Behavior()
     {
         base.Behavior();
+        Debug.Log("I am SAD");
     }
 
     public override void Display()
@@ -168,6 +170,7 @@ public class UncontrollableScare : UncontrollableAction
     public override void Behavior()
     {
         base.Behavior();
+        Debug.Log("I am SCARE");
     }
 
     public override void Display()
@@ -181,6 +184,7 @@ public class UncontrollableAngry : UncontrollableAction
     public override void Behavior()
     {
         base.Behavior();
+        Debug.Log("I am ANGRY");
     }
 
     public override void Display()

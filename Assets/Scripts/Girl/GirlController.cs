@@ -48,8 +48,10 @@ public class GirlController : MonoBehaviour
     //Ally
     public static List<BattleNPC> allyList;
 
-    // my battle controller
-    BattleController myBattleController;
+    // my battle selection controller
+    BattleSelectionController myBattleSelectionController;
+    // my battle phase controller
+    BattlePhaseController myBattlePhaseController;
 
     // ------------------------------------------------------------------------- //
     // ------------------------------------------------------------------------- //
@@ -99,14 +101,24 @@ public class GirlController : MonoBehaviour
         return myKnowledgePoint;
     }
 
-    public void SetBattleController(BattleController bc)
+    public void SetBattleSelectionController(BattleSelectionController bc)
     {
-        myBattleController = bc;
+        myBattleSelectionController = bc;
     }
 
-    public BattleController GetBattleController()
+    public BattleSelectionController GetBattleSelectionController()
     {
-        return myBattleController;
+        return myBattleSelectionController;
+    }
+
+    public void SetBattlePhaseController(BattlePhaseController bp)
+    {
+        myBattlePhaseController = bp;
+    }
+
+    public BattlePhaseController GetBattlePhaseController()
+    {
+        return myBattlePhaseController;
     }
 
     public void SetEmotionLevel(float value)
