@@ -6,13 +6,26 @@ public class Action
 {
     // target list
     public List<BattleNPC> myTargetList;
-    public BattleNPC thisNPC;
+    protected BattleNPC thisNPC;
 
-    // default constructor
-    public Action()
+    // uncontrollable action constructor
+    public Action() { }
+
+    // controllable action constructor
+    public Action(BattleNPC me)
     {
-        // clear target list in case myTargetList is the previous list
-        myTargetList.Clear();
+        thisNPC = me;
+
+        if(myTargetList != null)
+        {
+            // clear target list in case myTargetList is the previous list
+            myTargetList.Clear();
+        }
+        else
+        {
+            // initiate
+            myTargetList = new List<BattleNPC>();
+        }
         //reset defense point
         if(thisNPC.GetDefendBool() == true)
         {
@@ -40,6 +53,9 @@ public class Action
 
 public class ControllableAction : Action
 {
+    public ControllableAction(BattleNPC me) : base(me)
+    { }
+
     public override void Behavior()
     {
         base.Behavior();
@@ -53,6 +69,9 @@ public class ControllableAction : Action
 
 class Attack : ControllableAction
 {
+    public Attack(BattleNPC me) : base(me)
+    { }
+
     public override void Behavior()
     {
         base.Behavior();
@@ -80,6 +99,9 @@ class Attack : ControllableAction
 
 public class Defend : ControllableAction
 {
+    public Defend(BattleNPC me) : base(me)
+    { }
+
     public override void Behavior()
     {
         base.Behavior();
@@ -95,6 +117,9 @@ public class Defend : ControllableAction
 
 public class UseKnowledge : ControllableAction
 {
+    public UseKnowledge(BattleNPC me) : base(me)
+    { }
+
     public override void Behavior()
     {
         base.Behavior();
@@ -108,6 +133,9 @@ public class UseKnowledge : ControllableAction
 
 public class Run : ControllableAction
 {
+    public Run(BattleNPC me) : base(me)
+    { }
+
     public override void Behavior()
     {
         base.Behavior();

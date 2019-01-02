@@ -40,7 +40,18 @@ public class GameStateManager : MonoBehaviour
 
     private void Update()
     {
-        // 
+        // call related state function
+        switch (myGameState)
+        {
+            case GameState.SELECTION_PHASE:
+                SelectionPhase();
+                break;
+            case GameState.BATTLE_PHASE:
+                BattlePhase();
+                break;
+            case GameState.NORMAL:
+                break;
+        }
     }
 
     public void SetGameState(GameState newGameState)

@@ -34,18 +34,21 @@ public class BattlePhaseController : MonoBehaviour
         girlAlly = BattleSelectionController.selectedAllyList;
         allyAction = BattleSelectionController.myAction;
 
-        // initialize defense array
-        // get defense
-        for (int j = 0; j < girlAlly.Count; j++)
+        if(girlAlly != null)
         {
-            if (girlAlly[j].GetDefendBool())
+            // initialize defense array
+            // get defense
+            for (int j = 0; j < girlAlly.Count; j++)
             {
-                defense[j] = girlAlly[j].GetBaseDefense() + girlAlly[j].GetDefense();
-            }
-            else
-            {
-                // to ensure the value is not refered to Alien number
-                defense[j] = 0;
+                if (girlAlly[j].GetDefendBool())
+                {
+                    defense[j] = girlAlly[j].GetBaseDefense() + girlAlly[j].GetDefense();
+                }
+                else
+                {
+                    // to ensure the value is not refered to Alien number
+                    defense[j] = 0;
+                }
             }
         }
     }

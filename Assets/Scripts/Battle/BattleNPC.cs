@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum NPCTypes
 {
+    NPC,
     ALLY,
     MONSTER
 };
@@ -16,13 +17,23 @@ public class BattleNPC : MonoBehaviour
     [SerializeField] float myBaseDamage;
     [SerializeField] float myBaseDefense;
     
-
     float myDamage;
     float myDefense;
 
     float totalDamageReceived;
 
     bool isDefend = false;
+    // add into ally list
+    [SerializeField] bool isAlly = false;
+
+    private void Update()
+    {
+        if(myType == NPCTypes.NPC && isAlly)
+        {
+            myType = NPCTypes.ALLY;
+            GirlController.Instance.AddAlly(this);
+        }
+    }
 
     // constructor
     public BattleNPC(float baseDmg, float baseDef, ElementType strength, ElementType weakness)

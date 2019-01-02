@@ -46,7 +46,7 @@ public class GirlController : MonoBehaviour
     public static List<Item> itemList;
 
     //Ally
-    public static List<BattleNPC> allyList;
+    [SerializeField]List<BattleNPC> allyList;
 
     // my battle selection controller
     BattleSelectionController myBattleSelectionController;
@@ -149,6 +149,16 @@ public class GirlController : MonoBehaviour
     public EmotionType GetEmotionType()
     {
         return myEmotionType;
+    }
+
+    public void AddAlly(BattleNPC npc)
+    {
+        allyList.Add(npc);
+    }
+
+    public List<BattleNPC> GetAllyList()
+    {
+        return allyList;
     }
 }
 

@@ -30,5 +30,8 @@ public class MonsterEncounterController : MonoBehaviour
         }
         // Enable battle selection controller
         GirlController.Instance.GetBattleSelectionController().enabled = true;
+
+        // set game state to selection phase
+        GameStateManager.Instance.SetGameState(GameState.SELECTION_PHASE);
     }
 }

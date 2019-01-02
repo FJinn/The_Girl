@@ -42,27 +42,34 @@ public class BattleSelectionController : MonoBehaviour
 
     private void OnEnable()
     {
-        allyList = GirlController.allyList;
+        allyList = GirlController.Instance.GetAllyList();
         // set myAction number
-        myAction = new Action[allyList.Count];
-        // add ally into target list
-        for(int i=0; i<allyList.Count; i++)
+        if (allyList != null)
         {
-            targetList.Add(allyList[i]);
-        }
-        indexOfAlly = 0;
-        actionChoice = 0;
-        // index for myAction
-        indexOfAction = 0;
-        // set state = none
-        currentState = SelectionState.NONE;
-        // state will be UNCONTROLLABLE if girl emotion is over 100 and uncontrollable
-        CheckUncontrollableAction();
-        // else state will still be none and runs selectAlly and chooseAction functions
-        if(currentState == SelectionState.NONE)
-        {
-            currentState = SelectionState.ALLY;
-        }
+            myAction = new Action[allyList.Count];
+            // initiate targetList
+            targetList = new List<BattleNPC>();
+            // initiate selected ally list
+            selectedAllyList = new List<BattleNPC>();
+            // add ally into target list
+            for (int i = 0; i < allyList.Count; i++)
+            {
+                targetList.Add(allyList[i]);
+            }
+            indexOfAlly = 0;
+            actionChoice = 0;
+            // index for myAction
+            indexOfAction = 0;
+            // set state = none
+            currentState = SelectionState.NONE;
+            // state will be UNCONTROLLABLE if girl emotion is over 100 and uncontrollable
+            CheckUncontrollableAction();
+            // else state will still be none and runs selectAlly and chooseAction functions
+            if (currentState == SelectionState.NONE)
+            {
+                currentState = SelectionState.ALLY;
+            }
+        }        
     }
 
     private void Update()
@@ -96,6 +103,8 @@ public class BattleSelectionController : MonoBehaviour
             {
                 indexOfAlly -= 1;
             }
+            // debug
+            Debug.Log("Up");
         }
         else if(Input.GetKey(KeyCode.DownArrow))
         {
@@ -107,7 +116,11 @@ public class BattleSelectionController : MonoBehaviour
             {
                 indexOfAlly += 1;
             }
+            // debug
+            Debug.Log("Down");
         }
+        // debug
+        Debug.Log("Ally: " + indexOfAlly);
 
         if(Input.GetKey(KeyCode.Z))
         {
@@ -118,6 +131,9 @@ public class BattleSelectionController : MonoBehaviour
             // add selected and stored ally into selectedAllyList for further function or add action respectively
             selectedAllyList.Add(selectedAlly);
             currentState = SelectionState.ACTION;
+            
+            // debug
+            Debug.Log("Selected Ally: " + selectedAlly);
         }
     }
 
@@ -133,6 +149,9 @@ public class BattleSelectionController : MonoBehaviour
             {
                 actionChoice -= 1;
             }
+
+            // debug
+            Debug.Log("Up");
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
@@ -144,32 +163,34 @@ public class BattleSelectionController : MonoBehaviour
             {
                 actionChoice += 1;
             }
-        }
 
-        if(Input.GetKeyDown(KeyCode.Z))
+            // debug
+            Debug.Log("Down");
+        }
+        // debug
+        Debug.Log("Action: " + actionChoice);
+
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             if(actionChoice == 0)
             {
                 // Normal Attack
-                myAction[indexOfAction] = new Attack();
-                myAction[indexOfAction].thisNPC = selectedAlly;
+                myAction[indexOfAction] = new Attack(selectedAlly);
             }
             else if(actionChoice == 1)
             {
                 // Normal Defend
-                myAction[indexOfAction] = new Defend();
-                myAction[indexOfAction].thisNPC = selectedAlly;
+                myAction[indexOfAction] = new Defend(selectedAlly);
             }
             else if(actionChoice == 2)
             {
                 // Use Knowledge
-                myAction[indexOfAction] = new UseKnowledge();
-                myAction[indexOfAction].thisNPC = selectedAlly;
+                myAction[indexOfAction] = new UseKnowledge(selectedAlly);
             }
             else if(actionChoice == 3)
             {
                 // Run
-                myAction[indexOfAction] = new Run();
+                myAction[indexOfAction] = new Run(selectedAlly);
                 // Deactivate game object as battle ends
                 gameObject.SetActive(false);
             }
@@ -185,6 +206,9 @@ public class BattleSelectionController : MonoBehaviour
                 GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
                 gameObject.SetActive(false);
             }
+
+            // debug
+            Debug.Log("Selected Action: " + myAction[indexOfAction - 1]);
         }
     }
 
