@@ -9,8 +9,10 @@ public enum NPCTypes
     MONSTER
 };
 
-public class BattleNPC : MonoBehaviour
+[System.Serializable]
+public class BattleNPC
 {
+    [SerializeField] string myName;
     [SerializeField] ElementType myStrength;
     [SerializeField] ElementType myWeakness;
     [SerializeField] protected NPCTypes myType;
@@ -23,23 +25,30 @@ public class BattleNPC : MonoBehaviour
     float totalDamageReceived;
 
     bool isDefend = false;
-    // add into ally list
-    [SerializeField] bool isAlly = false;
 
-    private void Update()
+    // constructor
+    public BattleNPC(float baseDmg, float baseDef, ElementType strength, ElementType weakness, bool _isAlly)
     {
-        if(myType == NPCTypes.NPC && isAlly)
+        myBaseDamage = baseDmg;
+        myBaseDefense = baseDef;
+        myStrength = strength;
+        myWeakness = weakness;
+
+        if(_isAlly)
         {
             myType = NPCTypes.ALLY;
             GirlController.Instance.AddAlly(this);
         }
     }
 
-    // constructor
-    public BattleNPC(float baseDmg, float baseDef, ElementType strength, ElementType weakness)
+    public void SetName(string name)
     {
-        baseDmg = myBaseDamage;
-        baseDef = myBaseDefense;
+        myName = name;
+    }
+
+    public string GetName()
+    {
+        return myName;
     }
 
     public ElementType GetStrength()
@@ -50,6 +59,11 @@ public class BattleNPC : MonoBehaviour
     public ElementType GetWeakness()
     {
         return myWeakness;
+    }
+
+    public void SetNPCType(NPCTypes type)
+    {
+        myType = type;
     }
 
     public NPCTypes GetNPCType()
@@ -102,7 +116,7 @@ public class Monster : BattleNPC
 {
     float myHP;
     [SerializeField] List<Knowledge> myKnowledgeSkillList;
-    public Monster(float baseDmg, float baseDef,ElementType strength,ElementType weakness) :base ( baseDmg,  baseDef, strength, weakness)
+    public Monster(float baseDmg, float baseDef,ElementType strength,ElementType weakness) :base ( baseDmg,  baseDef, strength, weakness, false)
     {
         myType = NPCTypes.MONSTER;
     }

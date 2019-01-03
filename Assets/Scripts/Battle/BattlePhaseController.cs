@@ -74,7 +74,7 @@ public class BattlePhaseController : MonoBehaviour
         for(int i=0; i<girlAlly.Count; i++)
         {
             allyAction[i].Behavior();
-            Debug.Log(girlAlly[i].name + " : " + allyAction[i]);
+            Debug.Log(girlAlly[i].GetName() + " : " + allyAction[i]);
         }
 
         myState = BattleState.MONSTER;

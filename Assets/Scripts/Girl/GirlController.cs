@@ -43,10 +43,10 @@ public class GirlController : MonoBehaviour
     public static List<Knowledge> skillList;
 
     // my current item
-    public static List<Item> itemList;
+    public List<Item> itemList;
 
     //Ally
-    [SerializeField]List<BattleNPC> allyList;
+    [SerializeField] List<BattleNPC> allyList;
 
     // my battle selection controller
     BattleSelectionController myBattleSelectionController;
