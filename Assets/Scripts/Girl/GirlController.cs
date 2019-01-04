@@ -10,17 +10,6 @@ public class GirlController : MonoBehaviour
 
     private static GirlController instance;
     public static GirlController Instance { get { return instance; } }
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
 
     // my attributes
     [SerializeField] float myCurrentHP;
@@ -40,7 +29,7 @@ public class GirlController : MonoBehaviour
     [SerializeField] EmotionType myEmotionType;
 
     // my current skill
-    public static List<Knowledge> skillList;
+    [SerializeField] List<Knowledge> skillList;
 
     // my current item
     public List<Item> itemList;
@@ -52,6 +41,42 @@ public class GirlController : MonoBehaviour
     BattleSelectionController myBattleSelectionController;
     // my battle phase controller
     BattlePhaseController myBattlePhaseController;
+    // my knowledge slot interface
+    KnowledgeSlotInterface myKnowledgeSlotInterface;
+
+    // Initialize 
+    void Awake()
+    {
+        // singleton
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+
+        // Initialize 
+        //
+        // skill list
+        if (skillList == null)
+        {
+            skillList = new List<Knowledge>();
+        }
+        // ally list
+        if (allyList == null)
+        {
+            allyList = new List<BattleNPC>();
+        }
+        // item list
+        if(itemList == null)
+        {
+            itemList = new List<Item>();
+        }
+
+
+    }
 
     // ------------------------------------------------------------------------- //
     // ------------------------------------------------------------------------- //
@@ -121,6 +146,16 @@ public class GirlController : MonoBehaviour
         return myBattlePhaseController;
     }
 
+    public void SetKnowledgeSlotInterface(KnowledgeSlotInterface ksi)
+    {
+        myKnowledgeSlotInterface = ksi;
+    }
+
+    public KnowledgeSlotInterface GetKnowledgeSlotInterface()
+    {
+        return myKnowledgeSlotInterface;
+    }
+
     public void SetEmotionLevel(float value)
     {
         myEmotionLevel = value * myEmotionLevelRate;
@@ -149,6 +184,19 @@ public class GirlController : MonoBehaviour
     public EmotionType GetEmotionType()
     {
         return myEmotionType;
+    }
+
+    public void AddSkill(Knowledge k)
+    {
+        // add to list
+        skillList.Add(k);
+        // sort list
+        skillList.Sort((x, y) => x.GetID().CompareTo(y.GetID()));
+    }
+
+    public List<Knowledge> GetSkillList()
+    {
+        return skillList;
     }
 
     public void AddAlly(BattleNPC npc)

@@ -5,6 +5,7 @@ using UnityEngine;
 public enum GameState
 {
     NORMAL,
+    KNOWLEDGE_PANEL,
     ENCOUNTER,
     PREPARATION,
     SELECTION_PHASE,
@@ -25,6 +26,9 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get { return instance; } }
 
     [SerializeField] GameState myGameState;
+
+    // temp for debug
+    public GameObject knowledgePanel;
 
     private void Awake()
     {
@@ -51,6 +55,21 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.NORMAL:
                 break;
+        }
+
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            // temporary key
+            if (myGameState == GameState.NORMAL)
+            {
+                knowledgePanel.SetActive(true);
+                myGameState = GameState.KNOWLEDGE_PANEL;
+            }
+            else if (myGameState == GameState.KNOWLEDGE_PANEL)
+            {
+                knowledgePanel.SetActive(false);
+                myGameState = GameState.NORMAL;
+            }
         }
     }
 
