@@ -46,9 +46,10 @@ public class MonsterEncounterController : MonoBehaviour
             for (int i = 0; i < monsterNum; i++)
             {
                 Monster m = new Monster(1, 1, (ElementType)Random.Range(0, 3), (ElementType)Random.Range(0, 3));
-                m.SetMyHP(1);
+                m.SetMyHP(10);
                 monsterArray[i] = m;
                 monsterGO[i].GetComponent<MonsterController>().SetMonster(monsterArray[i]);
+                monsterGO[i].GetComponent<MonsterController>().enabled = true;
                 // add into battle controller static list
                 BattleSelectionController.targetList.Add(monsterArray[i]);
                 // add into monsterList

@@ -128,7 +128,7 @@ public class Monster : BattleNPC
 
     public void SetMyHP(float value)
     {
-        value = myHP;
+        myHP = value;
     }
 
     public List<Knowledge> GetMyKnowledgeList()
