@@ -35,7 +35,7 @@ public class Action
     }
 
     // set my target
-    public void SetTarget(BattleNPC target)
+    public void AddTarget(BattleNPC target)
     {
         myTargetList.Add(target);
     }
@@ -117,12 +117,31 @@ public class Defend : ControllableAction
 
 public class UseKnowledge : ControllableAction
 {
-    public UseKnowledge(BattleNPC me) : base(me)
-    { }
+    Knowledge thisKnowledge;
+
+    public UseKnowledge(BattleNPC me, Knowledge k) : base(me)
+    {
+        thisKnowledge = k;
+    }
 
     public override void Behavior()
     {
         base.Behavior();
+
+        for (int i = 0; i < myTargetList.Count; i++)
+        {
+            BattleNPC temp = myTargetList[i];
+            Monster tempTarget = (Monster)temp;
+            float hp = tempTarget.GetMyHP();
+            float damage = GirlController.Instance.GetEQ() + thisKnowledge.GetValue();
+            float defense = tempTarget.GetBaseDefense() + tempTarget.GetDefense();
+            if (damage > defense)
+            {
+                damage = damage - defense;
+                hp -= damage;
+            }
+            tempTarget.SetMyHP(hp);
+        }
     }
 
     public override void Display()

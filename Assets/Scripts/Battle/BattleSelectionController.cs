@@ -9,6 +9,7 @@ public class BattleSelectionController : MonoBehaviour
         ALLY,
         ACTION,
         UNCONTROLLABLE,
+        SKILL_SELECTION,
         TARGET,
         NONE
     }
@@ -30,7 +31,15 @@ public class BattleSelectionController : MonoBehaviour
     // index for target
     int indexOfTarget;
     // action target number
-    public static int actionTargetNumber;
+    public int actionTargetNumber;
+    // selected knowledge
+    Knowledge selectedKnowledge;
+    // cache skill selection effect controller
+    public SkillSelectionEffectController skillSelectionEffectController;
+    // cache battle indicator controller
+    public BattleIndicatorController battleIndicatorController;
+    // index for knowledge/skill selection
+    int knowledgeIndex = 0;
 
     // Action
     public static Action[] myAction;
@@ -47,15 +56,31 @@ public class BattleSelectionController : MonoBehaviour
         if (allyList != null)
         {
             myAction = new Action[allyList.Count];
-            // initiate targetList
-            targetList = new List<BattleNPC>();
+            // done in monsterEncounterController
+            //if(targetList != null)
+            //{
+            //    targetList.Clear();
+            //}
+            //else
+            //{
+            //    // initiate targetList
+            //    targetList = new List<BattleNPC>();
+            //}
             // initiate selected ally list
-            selectedAllyList = new List<BattleNPC>();
-            // add ally into target list
-            for (int i = 0; i < allyList.Count; i++)
+            if(selectedAllyList == null)
             {
-                targetList.Add(allyList[i]);
+                selectedAllyList = new List<BattleNPC>();
             }
+            else
+            {
+                selectedAllyList.Clear();
+            }
+            // remove ally from target list
+            //// add ally into target list
+            //for (int i = 0; i < allyList.Count; i++)
+            //{
+            //    targetList.Add(allyList[i]);
+            //}
             indexOfAlly = 0;
             actionChoice = 0;
             // index for myAction
@@ -81,6 +106,10 @@ public class BattleSelectionController : MonoBehaviour
         else if(currentState == SelectionState.ACTION)
         {
             ChooseAction();
+        }
+        else if(currentState == SelectionState.SKILL_SELECTION)
+        {
+            SelectKnowledge();
         }
         else if(currentState == SelectionState.TARGET)
         {
@@ -184,8 +213,9 @@ public class BattleSelectionController : MonoBehaviour
             }
             else if(actionChoice == 2)
             {
-                // Use Knowledge
-                myAction[indexOfAction] = new UseKnowledge(selectedAlly);
+                currentState = SelectionState.SKILL_SELECTION;
+
+                return;
             }
             else if(actionChoice == 3)
             {
@@ -196,24 +226,15 @@ public class BattleSelectionController : MonoBehaviour
             }
             currentState = SelectionState.TARGET;
 
-            // increase index of action
-            indexOfAction++;
-
-            // after chose action, check if the selected ally list contains more or equal to ally list
-            // if correct, end the phase and disable self
-            if(selectedAllyList.Count >= allyList.Count)
-            {
-                GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
-                gameObject.SetActive(false);
-            }
-
             // debug
-            Debug.Log("Selected Action: " + myAction[indexOfAction - 1]);
+            Debug.Log("Selected Action: " + myAction[indexOfAction]);
         }
     }
 
     void ChooseTarget()
     {
+        battleIndicatorController.SelectingOneTarget(indexOfTarget);
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             if (indexOfTarget == 0)
@@ -240,8 +261,26 @@ public class BattleSelectionController : MonoBehaviour
         // select target(s)
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            myAction[indexOfAction].SetTarget(targetList[indexOfTarget]);
+            myAction[indexOfAction].AddTarget(targetList[indexOfTarget]);
+
+            // increase index of action
+            indexOfAction++;
+
+            if (indexOfAction > myAction.Length)
+            {
+                indexOfAction = myAction.Length;
+            }
+
             currentState = SelectionState.ALLY;
+            
+            // after chose action, check if the selected ally list contains more or equal to ally list
+            // if correct, end the phase and disable self
+            if (selectedAllyList.Count >= allyList.Count)
+            {
+                GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
+                gameObject.SetActive(false);
+            }
+
         }
     }
 
@@ -278,6 +317,58 @@ public class BattleSelectionController : MonoBehaviour
             // skip to battle phase and disable game object
             GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
             gameObject.SetActive(false);
+        }
+    }
+
+    // knowledge selection
+    void SelectKnowledge()
+    {
+        // clear selected knowledge
+        selectedKnowledge = null;
+        GirlController girl = GirlController.Instance;
+        // activate skill selection objects 
+        skillSelectionEffectController.ActivateSpriteObjects();
+        
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (knowledgeIndex == 0)
+            {
+                //  knowledgeIndex = girl.GetSkillList().Count - 1;
+                // stop at index 0
+                knowledgeIndex = 0;
+            }
+            else
+            {
+                knowledgeIndex--;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (knowledgeIndex == girl.GetSkillList().Count - 1)
+            {
+                // knowledgeIndex = 0;
+                // stop at last index
+                knowledgeIndex = girl.GetSkillList().Count - 1;
+            }
+            else
+            {
+                knowledgeIndex++;
+            }
+        }
+
+        // pass in knowledge index into skillSelectionEffectController
+        skillSelectionEffectController.ChangeSprite(knowledgeIndex);
+
+        // select skill/knowledge
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            // Use Knowledge
+            myAction[indexOfAction] = new UseKnowledge(selectedAlly, selectedKnowledge);
+
+            selectedKnowledge = girl.GetSkillList()[knowledgeIndex];
+            skillSelectionEffectController.DeactivateSpriteObjects();
+            
+            currentState = SelectionState.TARGET;
         }
     }
 }

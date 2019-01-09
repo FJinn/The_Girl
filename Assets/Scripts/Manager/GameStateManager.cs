@@ -25,6 +25,11 @@ public class GameStateManager : MonoBehaviour
     private static GameStateManager instance;
     public static GameStateManager Instance { get { return instance; } }
 
+    // temp to get camera
+    Camera cam;
+    // temp ori pos
+    Vector2 ori;
+
     [SerializeField] GameState myGameState;
 
     // temp for debug
@@ -40,6 +45,8 @@ public class GameStateManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        cam = Camera.main;
     }
 
     private void Update()
@@ -49,11 +56,20 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.SELECTION_PHASE:
                 SelectionPhase();
+                // cache current position
+                if(ori != (Vector2)cam.transform.position)
+                {
+                    ori = cam.transform.position;
+                }
+                // switch camera position
+                cam.transform.position = new Vector2(5.5f, 9.3f);
                 break;
             case GameState.BATTLE_PHASE:
                 BattlePhase();
                 break;
             case GameState.NORMAL:
+                // switch camera position back to normal
+                cam.transform.position = ori;
                 break;
         }
 

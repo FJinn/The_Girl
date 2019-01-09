@@ -9,25 +9,19 @@ public class KnowledgeSlotInterface : MonoBehaviour
 {
     [SerializeField] List<KnowledgeSlotController> myKnowledgeSlotList;
 
+    // index for knowledge slot
+    int knowledgeSlotIndex;
+
     public void AddToList(int id, KnowledgeSlotController mySlot)
     {
         myKnowledgeSlotList.Insert(id, mySlot);
     }
-
-    // index for knowledge slot
-    int knowledgeSlotIndex;
 
     private void Update()
     {
         if(GameStateManager.Instance.GetGameState() == GameState.KNOWLEDGE_PANEL)
         {
             SelectKnowledgeSlot();
-        }
-
-        // debug
-        if (!myKnowledgeSlotList[knowledgeSlotIndex].Activated())
-        {
-            myKnowledgeSlotList[knowledgeSlotIndex].gameObject.GetComponent<Image>().color = Color.yellow;
         }
     }
 
@@ -37,6 +31,7 @@ public class KnowledgeSlotInterface : MonoBehaviour
         {
             if (knowledgeSlotIndex < myKnowledgeSlotList.Count - 1)
             {
+                myKnowledgeSlotList[knowledgeSlotIndex].SlotIsNotSelected();
                 knowledgeSlotIndex += 1;
             }
         }
@@ -44,14 +39,21 @@ public class KnowledgeSlotInterface : MonoBehaviour
         {
             if (knowledgeSlotIndex > 0)
             {
+                myKnowledgeSlotList[knowledgeSlotIndex].SlotIsNotSelected();
                 knowledgeSlotIndex -= 1;
             }
+        }
+
+        if (!myKnowledgeSlotList[knowledgeSlotIndex].Activated())
+        {
+            myKnowledgeSlotList[knowledgeSlotIndex].SlotIsSelected();
         }
 
         if (Input.GetKeyDown(KeyCode.Z) && !myKnowledgeSlotList[knowledgeSlotIndex].Activated())
         {
             myKnowledgeSlotList[knowledgeSlotIndex].ActivateSlot();
         }
+
     }
 }
 
@@ -82,12 +84,14 @@ public class Knowledge
     [SerializeField] KnowledgeType myType;
     // value that adjust Girl attribute, skill, or buff
     [SerializeField] float myValue;
+    // sprite to display for this knowledge
+    [SerializeField] Sprite mySprite;
 
     // default constructor
     public Knowledge() { }
 
     // overload constructor
-    public Knowledge(int ID, string name, string description, ElementType element, KnowledgeType type, float value)
+    public Knowledge(int ID, string name, string description, ElementType element, KnowledgeType type, float value, Sprite sprite)
     {
         myID = ID;
         myName = name;
@@ -95,10 +99,21 @@ public class Knowledge
         myElement = element;
         myType = type;
         myValue = value;
+        mySprite = sprite;
     }
 
     public int GetID()
     {
         return myID;
+    }
+
+    public Sprite GetSprite()
+    {
+        return mySprite;
+    }
+
+    public float GetValue()
+    {
+        return myValue;
     }
 }

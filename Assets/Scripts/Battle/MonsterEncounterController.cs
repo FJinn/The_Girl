@@ -23,7 +23,7 @@ public class MonsterEncounterController : MonoBehaviour
             // Random number
             int monsterNum = Random.Range(2, 4);
             // clear targetList
-            if(BattleSelectionController.targetList != null)
+            if (BattleSelectionController.targetList != null)
             {
                 BattleSelectionController.targetList.Clear();
             }

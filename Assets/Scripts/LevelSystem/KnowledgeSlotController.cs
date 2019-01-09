@@ -14,6 +14,7 @@ public class KnowledgeSlotController : MonoBehaviour
     [SerializeField] ElementType myElement;
     [SerializeField] KnowledgeType myType;
     [SerializeField] float myValue;
+    [SerializeField] Sprite mySprite;
 
     // create a knowledge for this slot
     Knowledge myKnowledge;
@@ -31,13 +32,20 @@ public class KnowledgeSlotController : MonoBehaviour
 
     // cache girl controller
     GirlController girl;
+    // cache image
+    Image myImage;
+    // bool to check if this slot is selected
+    bool selected = false;
 
     private void Awake()
     {
         // get girl controller
         girl = GirlController.Instance;
         // initialize the slot content
-        myKnowledge = new Knowledge(myID, myName, myDescription, myElement, myType, myValue);
+        myKnowledge = new Knowledge(myID, myName, myDescription, myElement, myType, myValue, mySprite);
+        // link sprite to img
+        myImage = gameObject.GetComponent<Image>();
+        myImage.sprite = mySprite;
         // add to knowledgeSlotInterface list
         // assuming it will auto update when this script value is changed
         // for saving the data, telling data which has activated
@@ -45,13 +53,27 @@ public class KnowledgeSlotController : MonoBehaviour
         // girl.GetKnowledgeSlotInterface().AddToList(myID, this);
     }
 
-    // for debug changing color
-    private void Update()
+    // function to be called in knowledgeSlotInterface
+    public void SlotIsSelected()
     {
-        if (!isActivated)
+        if(!selected)
         {
-            // change color to red for debug
-            gameObject.GetComponent<Image>().color = Color.red;
+            selected = true;
+
+            // change color to yellow for debug
+            myImage.color = Color.yellow;
+        }
+    }
+
+    // function to revert color after slot is selected and then skip
+    public void SlotIsNotSelected()
+    {
+        if(selected)
+        {
+            selected = false;
+
+            // change color to white for debug
+            myImage.color = Color.white;
         }
     }
 
@@ -82,7 +104,7 @@ public class KnowledgeSlotController : MonoBehaviour
         if (girlKP >= myCost)
         {
             // change color to green for debug
-            gameObject.GetComponent<Image>().color = Color.green;
+            myImage.color = Color.green;
             // activated
             isActivated = true;
             // set next slot active
