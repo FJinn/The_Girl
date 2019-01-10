@@ -51,6 +51,8 @@ public class BattleSelectionController : MonoBehaviour
 
     private void OnEnable()
     {
+        GameStateManager.Instance.BattleCamera();
+
         allyList = GirlController.Instance.GetAllyList();
         // set myAction number
         if (allyList != null)
@@ -113,10 +115,10 @@ public class BattleSelectionController : MonoBehaviour
         }
         else if(currentState == SelectionState.TARGET)
         {
-            for (int i = 0; i < actionTargetNumber; i++)
-            {
+        //    for (int i = 0; i < actionTargetNumber; i++)
+        //    {
                 ChooseTarget();
-            }
+         //   }
         }
     }
 
@@ -235,22 +237,22 @@ public class BattleSelectionController : MonoBehaviour
     {
         battleIndicatorController.SelectingOneTarget(indexOfTarget);
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (indexOfTarget == 0)
             {
-                indexOfTarget = targetList.Count - 1;
+                indexOfTarget = 0; // targetList.Count - 1;
             }
             else
             {
                 indexOfTarget -= 1;
             }
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (indexOfTarget == targetList.Count - 1)
             {
-                indexOfTarget = 0;
+                indexOfTarget = targetList.Count - 1; // 0;
             }
             else
             {

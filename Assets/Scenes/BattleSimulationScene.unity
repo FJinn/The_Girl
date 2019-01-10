@@ -1079,7 +1079,7 @@ GameObject:
   m_Layer: 0
   m_Name: SelectionObject
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1765,8 +1765,8 @@ MonoBehaviour:
     myBaseDamage: 0
     myBaseDefense: 0
   actionTargetNumber: 0
-  skillSelectionEffectController: {fileID: 0}
-  battleIndicatorController: {fileID: 0}
+  skillSelectionEffectController: {fileID: 709335418}
+  battleIndicatorController: {fileID: 471704473}
 --- !u!1 &1305530073
 GameObject:
   m_ObjectHideFlags: 0

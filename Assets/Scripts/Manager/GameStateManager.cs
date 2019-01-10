@@ -28,7 +28,7 @@ public class GameStateManager : MonoBehaviour
     // temp to get camera
     Camera cam;
     // temp ori pos
-    Vector2 ori;
+    Vector3 ori;
 
     [SerializeField] GameState myGameState;
 
@@ -56,20 +56,11 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.SELECTION_PHASE:
                 SelectionPhase();
-                // cache current position
-                if(ori != (Vector2)cam.transform.position)
-                {
-                    ori = cam.transform.position;
-                }
-                // switch camera position
-                cam.transform.position = new Vector2(5.5f, 9.3f);
                 break;
             case GameState.BATTLE_PHASE:
                 BattlePhase();
                 break;
             case GameState.NORMAL:
-                // switch camera position back to normal
-                cam.transform.position = ori;
                 break;
         }
 
@@ -114,5 +105,22 @@ public class GameStateManager : MonoBehaviour
     {
         // to display attack and count the math
         GirlController.Instance.GetBattlePhaseController().enabled = true;
+    }
+
+    public void BattleCamera()
+    {
+        // cache current position
+        if (ori != cam.transform.position)
+        {
+            ori = cam.transform.position;
+        }
+        // switch camera position
+        cam.transform.position = new Vector3(5.5f, 9.3f, -10f);
+    }
+
+    public void NormalCamera()
+    {
+        // switch camera position back to normal
+        cam.transform.position = ori;
     }
 }
