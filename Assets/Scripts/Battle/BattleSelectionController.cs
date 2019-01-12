@@ -19,8 +19,10 @@ public class BattleSelectionController : MonoBehaviour
     [SerializeField] BattleNPC selectedAlly;
     // ally that has been selected for battle action
     public static List<BattleNPC> selectedAllyList;
-    // current active ally 
+    // ally list from girl
     private List<BattleNPC> allyList;
+    // current active ally 
+    private List<BattleNPC> currentAllyList;
     // Target list
     public static List<BattleNPC> targetList;
     // cache which ally is currently selected by player
@@ -31,7 +33,7 @@ public class BattleSelectionController : MonoBehaviour
     // index for target
     int indexOfTarget;
     // action target number
-    public int actionTargetNumber;
+    public int actionTargetNumber = 0;
     // selected knowledge
     Knowledge selectedKnowledge;
     // cache skill selection effect controller
@@ -51,13 +53,26 @@ public class BattleSelectionController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameStateManager.Instance.BattleCamera();
-
         allyList = GirlController.Instance.GetAllyList();
-        // set myAction number
-        if (allyList != null)
+        // initialize current ally list
+        if(currentAllyList == null)
         {
-            myAction = new Action[allyList.Count];
+            currentAllyList = new List<BattleNPC>();
+        }
+        else
+        {
+            currentAllyList.Clear();
+        }
+
+        for(int i=0; i<allyList.Count; i++)
+        {
+            currentAllyList.Add(allyList[i]);
+        }
+
+        // set myAction number
+        if (currentAllyList != null)
+        {
+            myAction = new Action[currentAllyList.Count];
             // done in monsterEncounterController
             //if(targetList != null)
             //{
@@ -111,7 +126,14 @@ public class BattleSelectionController : MonoBehaviour
         }
         else if(currentState == SelectionState.SKILL_SELECTION)
         {
-            SelectKnowledge();
+            if(GirlController.Instance.GetSkillList().Count > 0)
+            {
+                SelectKnowledge();
+            }
+            else
+            {
+                Debug.Log("Error, no skill!");
+            }
         }
         else if(currentState == SelectionState.TARGET)
         {
@@ -128,7 +150,7 @@ public class BattleSelectionController : MonoBehaviour
         {
             if(indexOfAlly == 0)
             {
-                indexOfAlly = allyList.Count-1;
+                indexOfAlly = currentAllyList.Count-1;
             }
             else
             {
@@ -139,7 +161,7 @@ public class BattleSelectionController : MonoBehaviour
         }
         else if(Input.GetKey(KeyCode.DownArrow))
         {
-            if(indexOfAlly == allyList.Count-1)
+            if(indexOfAlly == currentAllyList.Count-1)
             {
                 indexOfAlly = 0;
             }
@@ -153,12 +175,12 @@ public class BattleSelectionController : MonoBehaviour
         // debug
         Debug.Log("Ally: " + indexOfAlly);
 
-        if(Input.GetKey(KeyCode.Z))
+        if(Input.GetKeyDown(KeyCode.Z))
         {
             // store selected ally from the index
-            selectedAlly = allyList[indexOfAlly];
+            selectedAlly = currentAllyList[indexOfAlly];
             // remove selected ally from allyList
-            allyList.RemoveAt(indexOfAlly);
+            currentAllyList.RemoveAt(indexOfAlly);
             // add selected and stored ally into selectedAllyList for further function or add action respectively
             selectedAllyList.Add(selectedAlly);
             currentState = SelectionState.ACTION;
@@ -170,7 +192,7 @@ public class BattleSelectionController : MonoBehaviour
 
     private void ChooseAction()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (actionChoice == 0)
             {
@@ -184,7 +206,7 @@ public class BattleSelectionController : MonoBehaviour
             // debug
             Debug.Log("Up");
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (actionChoice == 3)
             {
@@ -223,8 +245,8 @@ public class BattleSelectionController : MonoBehaviour
             {
                 // Run
                 myAction[indexOfAction] = new Run(selectedAlly);
-                // Deactivate game object as battle ends
-                gameObject.SetActive(false);
+                // Deactivate this script as battle ends
+                this.enabled = false;
             }
             currentState = SelectionState.TARGET;
 
@@ -273,14 +295,17 @@ public class BattleSelectionController : MonoBehaviour
                 indexOfAction = myAction.Length;
             }
 
+            // off indicator
+            battleIndicatorController.SelectingOneTarget(-1);
+
             currentState = SelectionState.ALLY;
             
             // after chose action, check if the selected ally list contains more or equal to ally list
             // if correct, end the phase and disable self
-            if (selectedAllyList.Count >= allyList.Count)
+            if (selectedAllyList.Count >= currentAllyList.Count)
             {
                 GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
-                gameObject.SetActive(false);
+                this.enabled = false;
             }
 
         }
@@ -316,9 +341,9 @@ public class BattleSelectionController : MonoBehaviour
 
             // disable choose ally and choose action
             currentState = SelectionState.UNCONTROLLABLE;
-            // skip to battle phase and disable game object
+            // skip to battle phase and disable this script
             GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
-            gameObject.SetActive(false);
+            this.enabled = false;
         }
     }
 

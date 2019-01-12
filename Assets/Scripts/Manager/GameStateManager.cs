@@ -64,6 +64,7 @@ public class GameStateManager : MonoBehaviour
                 break;
         }
 
+        // bring out knowledge UI
         if(Input.GetKeyDown(KeyCode.K))
         {
             // temporary key
@@ -110,10 +111,7 @@ public class GameStateManager : MonoBehaviour
     public void BattleCamera()
     {
         // cache current position
-        if (ori != cam.transform.position)
-        {
-            ori = cam.transform.position;
-        }
+        ori = cam.transform.position;
         // switch camera position
         cam.transform.position = new Vector3(5.5f, 9.3f, -10f);
     }

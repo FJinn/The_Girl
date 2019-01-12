@@ -60,6 +60,9 @@ public class MonsterEncounterController : MonoBehaviour
 
             // set game state to selection phase
             GameStateManager.Instance.SetGameState(GameState.SELECTION_PHASE);
+
+            // set camera position
+            GameStateManager.Instance.BattleCamera();
         }
     }
 }

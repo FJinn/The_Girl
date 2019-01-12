@@ -122,8 +122,12 @@ public class BattlePhaseController : MonoBehaviour
         {
             // battle end
             GameStateManager.Instance.SetGameState(GameState.BATTLE_END);
+            // disable this script
+            this.enabled = false;
             // switch camera back
             GameStateManager.Instance.NormalCamera();
+            // For debug
+            Debug.Log("Battle End!");
         }
     }
 

@@ -43,6 +43,8 @@ public class GirlController : MonoBehaviour
     BattlePhaseController myBattlePhaseController;
     // my knowledge slot interface
     KnowledgeSlotInterface myKnowledgeSlotInterface;
+    // my movement controller
+    GirlMovementController myMovementController;
 
     // Initialize 
     void Awake()
@@ -154,6 +156,17 @@ public class GirlController : MonoBehaviour
     public KnowledgeSlotInterface GetKnowledgeSlotInterface()
     {
         return myKnowledgeSlotInterface;
+    }
+
+    // movement controller
+    public void SetMovementController(GirlMovementController gmc)
+    {
+        myMovementController = gmc;
+    }
+
+    public GirlMovementController GetMovementController()
+    {
+        return myMovementController;
     }
 
     public void SetEmotionLevel(float value)
