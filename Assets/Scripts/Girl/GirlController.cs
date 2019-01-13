@@ -41,6 +41,8 @@ public class GirlController : MonoBehaviour
     BattleSelectionController myBattleSelectionController;
     // my battle phase controller
     BattlePhaseController myBattlePhaseController;
+    // my battle end controller
+    BattleEndController myBattleEndController;
     // my knowledge slot interface
     KnowledgeSlotInterface myKnowledgeSlotInterface;
     // my movement controller
@@ -146,6 +148,17 @@ public class GirlController : MonoBehaviour
     public BattlePhaseController GetBattlePhaseController()
     {
         return myBattlePhaseController;
+    }
+
+    // battle end controller
+    public void SetBattleEndController(BattleEndController bec)
+    {
+        myBattleEndController = bec;
+    }
+
+    public BattleEndController GetBattleEndController()
+    {
+        return myBattleEndController;
     }
 
     public void SetKnowledgeSlotInterface(KnowledgeSlotInterface ksi)

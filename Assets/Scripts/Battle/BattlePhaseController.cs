@@ -122,6 +122,12 @@ public class BattlePhaseController : MonoBehaviour
         {
             // battle end
             GameStateManager.Instance.SetGameState(GameState.BATTLE_END);
+            // tell battle end controller if it is game over
+            if(girl.GetCurrentHP() <= 0)
+            {
+                girl.GetBattleEndController().SetGameOver(true);
+            }
+
             // disable this script
             this.enabled = false;
             // switch camera back

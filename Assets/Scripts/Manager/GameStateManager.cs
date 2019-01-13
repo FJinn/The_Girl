@@ -25,6 +25,8 @@ public class GameStateManager : MonoBehaviour
     private static GameStateManager instance;
     public static GameStateManager Instance { get { return instance; } }
 
+    // cache girl controller
+    GirlController girl;
     // temp to get camera
     Camera cam;
     // temp ori pos
@@ -47,6 +49,8 @@ public class GameStateManager : MonoBehaviour
         }
 
         cam = Camera.main;
+        // cache girl controller
+        girl = GirlController.Instance;
     }
 
     private void Update()
@@ -59,6 +63,9 @@ public class GameStateManager : MonoBehaviour
                 break;
             case GameState.BATTLE_PHASE:
                 BattlePhase();
+                break;
+            case GameState.BATTLE_END:
+                BattleEnd();
                 break;
             case GameState.NORMAL:
                 break;
@@ -99,13 +106,19 @@ public class GameStateManager : MonoBehaviour
     void SelectionPhase()
     {
         // for player to select ally, target, and action
-        GirlController.Instance.GetBattleSelectionController().enabled = true;
+       girl.GetBattleSelectionController().enabled = true;
     }
 
     void BattlePhase()
     {
         // to display attack and count the math
-        GirlController.Instance.GetBattlePhaseController().enabled = true;
+        girl.GetBattlePhaseController().enabled = true;
+    }
+
+    void BattleEnd()
+    {
+        // enable UI and battle result
+        girl.GetBattleEndController().enabled = true;
     }
 
     public void BattleCamera()

@@ -234,6 +234,20 @@ public class BattleSelectionController : MonoBehaviour
             {
                 // Normal Defend
                 myAction[indexOfAction] = new Defend(selectedAlly);
+
+                // if not the end of ally action, continue to another ally
+                currentState = SelectionState.ALLY;
+
+                // after chose action, check if the selected ally list contains more or equal to ally list
+                // if correct, end the phase and disable self
+                if (selectedAllyList.Count >= currentAllyList.Count)
+                {
+                    GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
+                    this.enabled = false;
+                }
+                
+                // quit running rest of the code since no need to choose target
+                return;
             }
             else if(actionChoice == 2)
             {
@@ -247,7 +261,12 @@ public class BattleSelectionController : MonoBehaviour
                 myAction[indexOfAction] = new Run(selectedAlly);
                 // Deactivate this script as battle ends
                 this.enabled = false;
+
+                // quit running rest of the code since girl runs away
+                // change to battle phase for run action
+                GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
             }
+            
             currentState = SelectionState.TARGET;
 
             // debug
