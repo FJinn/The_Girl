@@ -26,7 +26,10 @@ public class BattleSelectionController : MonoBehaviour
     // Target list
     public static List<BattleNPC> targetList;
     // cache which ally is currently selected by player
-    private int indexOfAlly = 0;
+    // array that cache what indexOfAlly have chosen, and thus, not able to be pick
+    private List<int> indexOfAllyList;
+    // index of ally
+    int indexOfAlly = 0;
     private int actionChoice = 0;
     // index for myAction
     int indexOfAction;
@@ -102,7 +105,23 @@ public class BattleSelectionController : MonoBehaviour
             //{
             //    targetList.Add(allyList[i]);
             //}
+
+            if (indexOfAllyList == null)
+            {
+                indexOfAllyList = new List<int>();
+            }
+            else
+            {
+                indexOfAllyList.Clear();
+            }
+
+            for (int i=0; i<currentAllyList.Count; i++)
+            {
+                indexOfAllyList.Add(i);
+            }
+
             indexOfAlly = 0;
+
             actionChoice = 0;
             // index for myAction
             indexOfAction = 0;
@@ -115,7 +134,8 @@ public class BattleSelectionController : MonoBehaviour
             {
                 currentState = SelectionState.ALLY;
             }
-        }        
+        }
+
     }
 
     private void Update()
@@ -150,11 +170,11 @@ public class BattleSelectionController : MonoBehaviour
 
     private void SelectAlly()
     {
-        allySelectionEffectController.SelectingOneTarget(indexOfAlly);
+        allySelectionEffectController.SelectingOneTarget(indexOfAllyList[indexOfAlly]);
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if(indexOfAlly == 0)
+            if (indexOfAlly == 0)
             {
                 indexOfAlly = 0; // currentAllyList.Count-1;
             }
@@ -163,11 +183,11 @@ public class BattleSelectionController : MonoBehaviour
                 indexOfAlly -= 1;
             }
         }
-        else if(Input.GetKey(KeyCode.DownArrow))
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if(indexOfAlly == currentAllyList.Count-1)
+            if (indexOfAlly == currentAllyList.Count-1)
             {
-                indexOfAlly = currentAllyList.Count - 1; // 0;
+                indexOfAlly =  currentAllyList.Count-1; // 0;
             }
             else
             {
@@ -184,12 +204,15 @@ public class BattleSelectionController : MonoBehaviour
             // add selected and stored ally into selectedAllyList for further function or add action respectively
             selectedAllyList.Add(selectedAlly);
             currentState = SelectionState.ACTION;
-            
+
+            indexOfAllyList.RemoveAt(indexOfAlly);
+            indexOfAlly = 0;
+
             // off indicator
             allySelectionEffectController.SelectingOneTarget(-1);
 
             // debug
-            Debug.Log("Selected Ally: " + selectedAlly);
+            Debug.Log("Selected Ally: " + selectedAlly.GetName());
         }
     }
 
@@ -237,9 +260,9 @@ public class BattleSelectionController : MonoBehaviour
                 // if not the end of ally action, continue to another ally
                 currentState = SelectionState.ALLY;
 
-                // after chose action, check if the selected ally list contains more or equal to ally list
+                // after chose action, check if current ally list is zero => means no more available ally to choose 
                 // if correct, end the phase and disable self
-                if (selectedAllyList.Count >= currentAllyList.Count)
+                if (currentAllyList.Count <= 0)
                 {
                     GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
                     this.enabled = false;
@@ -319,10 +342,10 @@ public class BattleSelectionController : MonoBehaviour
             battleIndicatorController.SelectingOneTarget(-1);
 
             currentState = SelectionState.ALLY;
-            
-            // after chose action, check if the selected ally list contains more or equal to ally list
+
+            // after chose action, check if current ally list is zero => means no more available ally to choose 
             // if correct, end the phase and disable self
-            if (selectedAllyList.Count >= currentAllyList.Count)
+            if (currentAllyList.Count <= 0)
             {
                 GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
                 this.enabled = false;

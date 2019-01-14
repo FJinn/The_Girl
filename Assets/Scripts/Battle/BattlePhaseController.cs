@@ -51,6 +51,7 @@ public class BattlePhaseController : MonoBehaviour
                 }
             }
         }
+        Debug.Log("ENABLE!");
     }
 
     private void Update()
