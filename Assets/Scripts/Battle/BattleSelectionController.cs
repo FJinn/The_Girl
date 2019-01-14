@@ -26,8 +26,8 @@ public class BattleSelectionController : MonoBehaviour
     // Target list
     public static List<BattleNPC> targetList;
     // cache which ally is currently selected by player
-    private int indexOfAlly;
-    private int actionChoice;
+    private int indexOfAlly = 0;
+    private int actionChoice = 0;
     // index for myAction
     int indexOfAction;
     // index for target
@@ -38,6 +38,10 @@ public class BattleSelectionController : MonoBehaviour
     Knowledge selectedKnowledge;
     // cache skill selection effect controller
     public SkillSelectionEffectController skillSelectionEffectController;
+    // cache action selection effect controller
+    public ActionSelectionEffectController actionSelectionEffectController;
+    // cache ally selection effect controller
+    public AllySelectionEffectController allySelectionEffectController;
     // cache battle indicator controller
     public BattleIndicatorController battleIndicatorController;
     // index for knowledge/skill selection
@@ -145,35 +149,31 @@ public class BattleSelectionController : MonoBehaviour
     }
 
     private void SelectAlly()
-    {   
-        if(Input.GetKey(KeyCode.UpArrow))
+    {
+        allySelectionEffectController.SelectingOneTarget(indexOfAlly);
+
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             if(indexOfAlly == 0)
             {
-                indexOfAlly = currentAllyList.Count-1;
+                indexOfAlly = 0; // currentAllyList.Count-1;
             }
             else
             {
                 indexOfAlly -= 1;
             }
-            // debug
-            Debug.Log("Up");
         }
         else if(Input.GetKey(KeyCode.DownArrow))
         {
             if(indexOfAlly == currentAllyList.Count-1)
             {
-                indexOfAlly = 0;
+                indexOfAlly = currentAllyList.Count - 1; // 0;
             }
             else
             {
                 indexOfAlly += 1;
             }
-            // debug
-            Debug.Log("Down");
         }
-        // debug
-        Debug.Log("Ally: " + indexOfAlly);
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -185,6 +185,9 @@ public class BattleSelectionController : MonoBehaviour
             selectedAllyList.Add(selectedAlly);
             currentState = SelectionState.ACTION;
             
+            // off indicator
+            allySelectionEffectController.SelectingOneTarget(-1);
+
             // debug
             Debug.Log("Selected Ally: " + selectedAlly);
         }
@@ -192,36 +195,32 @@ public class BattleSelectionController : MonoBehaviour
 
     private void ChooseAction()
     {
+        actionSelectionEffectController.ActivateSpriteObjects();
+
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (actionChoice == 0)
-            {
-                actionChoice = 3;
-            }
-            else
-            {
-                actionChoice -= 1;
-            }
-
-            // debug
-            Debug.Log("Up");
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (actionChoice == 3)
             {
                 actionChoice = 0;
             }
             else
             {
+                actionChoice -= 1;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (actionChoice == 3)
+            {
+                actionChoice = 3;
+            }
+            else
+            {
                 actionChoice += 1;
             }
-
-            // debug
-            Debug.Log("Down");
         }
-        // debug
-        Debug.Log("Action: " + actionChoice);
+
+        actionSelectionEffectController.ChangeSprite(actionChoice);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -266,7 +265,9 @@ public class BattleSelectionController : MonoBehaviour
                 // change to battle phase for run action
                 GameStateManager.Instance.SetGameState(GameState.BATTLE_PHASE);
             }
-            
+
+            actionSelectionEffectController.DeactivateSpriteObjects();
+
             currentState = SelectionState.TARGET;
 
             // debug

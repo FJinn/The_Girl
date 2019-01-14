@@ -28,6 +28,8 @@ public class BattleEndController : MonoBehaviour
 
         // link to girl
         girl.SetBattleEndController(this);
+
+        this.enabled = false;
     }
 
     private void Update()
